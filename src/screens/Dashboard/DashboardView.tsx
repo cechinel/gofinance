@@ -9,7 +9,8 @@ import {
   User,
   UserGreeting,
   UserName,
-  Icon
+  Icon,
+  HightlightCards,
 } from "./DashboardViewStyled";
 
 export function Dashboard() {
@@ -29,11 +30,30 @@ export function Dashboard() {
             </User>
           </UserInfo>
 
-		  <Icon name="power" />
+          <Icon name="power" />
         </UserContainer>
       </Header>
 
-      <HightlightCard />
+      <HightlightCards>
+        <HightlightCard 
+          title="Entradas"
+          amount="R$ 17.500,00"
+          lastTransaction="ijasoija soija soijaasas"
+          type="down"
+        />
+        <HightlightCard 
+          title="Saídas"
+          amount="R$ 500,00"
+          lastTransaction="ijasoija soija soijaasas"
+          type="up"
+        />
+        <HightlightCard 
+          title="Total"
+          amount="R$ 17.000,00"
+          lastTransaction="ijasoija soija soijaasas"
+          type="total"
+        />
+      </HightlightCards>
     </Container>
   );
 }
