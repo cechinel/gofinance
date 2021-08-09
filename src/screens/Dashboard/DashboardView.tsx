@@ -1,5 +1,6 @@
 import React from "react";
 import { HightlightCard } from "../../components/HightlightCard/HightlightCard";
+import { TransactionCard } from "../../components/TransactionCard/TransactionCardView";
 import {
   Container,
   Header,
@@ -11,6 +12,8 @@ import {
   UserName,
   Icon,
   HightlightCards,
+  Transactions,
+  Title,
 } from "./DashboardViewStyled";
 
 export function Dashboard() {
@@ -35,25 +38,30 @@ export function Dashboard() {
       </Header>
 
       <HightlightCards>
-        <HightlightCard 
+        <HightlightCard
           title="Entradas"
           amount="R$ 17.500,00"
           lastTransaction="ijasoija soija soijaasas"
           type="down"
         />
-        <HightlightCard 
+        <HightlightCard
           title="Saídas"
           amount="R$ 500,00"
           lastTransaction="ijasoija soija soijaasas"
           type="up"
         />
-        <HightlightCard 
+        <HightlightCard
           title="Total"
           amount="R$ 17.000,00"
           lastTransaction="ijasoija soija soijaasas"
           type="total"
         />
       </HightlightCards>
+
+      <Transactions>
+        <Title>Listagem</Title>
+        <TransactionCard />
+      </Transactions>
     </Container>
   );
 }
