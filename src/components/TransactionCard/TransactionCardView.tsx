@@ -4,10 +4,10 @@ import {
   Category,
   CategoryName,
   Container,
+  Date,
   Footer,
   Icon,
   Title,
-  Date,
 } from "./TransactionCardStyle";
 
 interface TransactionProps {

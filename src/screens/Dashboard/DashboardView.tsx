@@ -60,7 +60,13 @@ export function Dashboard() {
 
       <Transactions>
         <Title>Listagem</Title>
-        <TransactionCard />
+        <TransactionCard
+          title="titulo"
+          amount="R$ 40,00"
+          type="sell"
+          categoryName="name"
+          date="12/12/2222"
+        />
       </Transactions>
     </Container>
   );
