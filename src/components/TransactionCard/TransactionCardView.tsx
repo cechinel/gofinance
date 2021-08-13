@@ -10,39 +10,39 @@ import {
   Title,
 } from "./TransactionCardStyle";
 
-interface TransactionProps {
+interface CategoryProps {
+  name: string;
+  icon: string;
+}
+
+export interface TransactionProps {
   title: string;
   amount: string;
-  type: "sell" | "down" | "total";
-  categoryName: string;
+  type: "positive" | "negative";
+  category: CategoryProps;
   date: string;
 }
 
-const icon = {
-  sell: "dollar-sign",
-  down: "arrow-down-circle",
-  total: "dollar-sign",
-};
+interface Props {
+  data: TransactionProps;
+}
 
-export function TransactionCard({
-  title,
-  amount,
-  type,
-  categoryName,
-  date,
-}: TransactionProps) {
+export function TransactionCard({ data }: Props) {
   return (
     <Container>
-      <Title>{title}</Title>
+      <Title>{data.title}</Title>
 
-      <Amount>{amount}</Amount>
+      <Amount type={data.type}>
+        {data.type === "negative" && "- "}
+        {data.amount}
+      </Amount>
 
       <Footer>
         <Category>
-          <Icon name={icon[type]} type={type} />
-          <CategoryName>{categoryName}</CategoryName>
+          <Icon name={data.category.icon} />
+          <CategoryName>{data.category.name}</CategoryName>
         </Category>
-        <Date>{date}</Date>
+        <Date>{data.date}</Date>
       </Footer>
     </Container>
   );

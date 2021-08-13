@@ -1,22 +1,53 @@
 import React from "react";
 import { HightlightCard } from "../../components/HightlightCard/HightlightCard";
-import { TransactionCard } from "../../components/TransactionCard/TransactionCardView";
+import { TransactionCard, TransactionProps } from "../../components/TransactionCard/TransactionCardView";
 import {
   Container,
-  Header,
-  UserContainer,
-  UserInfo,
-  Photo,
-  User,
-  UserGreeting,
-  UserName,
-  Icon,
-  HightlightCards,
-  Transactions,
-  Title,
+  Header, HightlightCards, Icon, Photo, Title,
+  TransactionList, Transactions, User, UserContainer, UserGreeting, UserInfo, UserName
 } from "./DashboardViewStyled";
 
+export interface DataListProps extends TransactionProps {
+  id: string;
+}
+
 export function Dashboard() {
+  const data: DataListProps[] = [
+    {
+      id: "2",
+      title: "Foo Bar",
+      amount: "R$ 400,00",
+      type: "positive",
+      category: {
+        name: "Vendas",
+        icon: "dollar-sign",
+      },
+      date: "12/12/2222",
+    },
+    {
+      id: "3",
+      title: "Joe Doe",
+      amount: "R$ 333,00",
+      type: "negative",
+      category: {
+        name: "Vendas",
+        icon: "coffee",
+      },
+      date: "12/12/2222",
+    },
+    {
+      id: "4",
+      title: "Bar Code",
+      amount: "R$ 999,00",
+      type: "positive",
+      category: {
+        name: "Vendas",
+        icon: "shopping-bag",
+      },
+      date: "12/12/2222",
+    },
+  ];
+
   return (
     <Container>
       <Header>
@@ -60,13 +91,13 @@ export function Dashboard() {
 
       <Transactions>
         <Title>Listagem</Title>
-        <TransactionCard
-          title="titulo"
-          amount="R$ 40,00"
-          type="sell"
-          categoryName="name"
-          date="12/12/2222"
+
+        <TransactionList
+          data={data}
+          keyExtractor={item => item.id}
+          renderItem={({item}) => <TransactionCard data={item} />}
         />
+        
       </Transactions>
     </Container>
   );
