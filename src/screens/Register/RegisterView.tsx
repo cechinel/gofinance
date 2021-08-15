@@ -1,9 +1,22 @@
-import React from "react";
+import React, { useState } from "react";
 import { Button } from "../../components/Forms/Button/Button";
 import { Input } from "../../components/Forms/Input/Input";
-import { Container, Header, Title, Form, Fields } from "./RegisterViewStyle";
+import { TransactionTypeButton } from "../../components/Forms/TransactionTypeButton/TransactionTypeButton";
+import {
+  Container,
+  Header,
+  Title,
+  Form,
+  Fields,
+  TransactionsTypes,
+} from "./RegisterViewStyle";
 
 export function RegisterView() {
+  const [transactionType, setTransactionType] = useState("");
+
+  const handleTransactionsTypeSelect = (type: "up" | "down") =>
+    setTransactionType(type);
+
   return (
     <Container>
       <Header>
@@ -14,6 +27,21 @@ export function RegisterView() {
         <Fields>
           <Input placeholder="Nome" />
           <Input placeholder="Preço" />
+
+          <TransactionsTypes>
+            <TransactionTypeButton
+              title="Income"
+              type="up"
+              onPress={() => handleTransactionsTypeSelect("up")}
+              isActive={transactionType === 'up'}
+            />
+            <TransactionTypeButton
+              title="Outcome"
+              type="down"
+              onPress={() => handleTransactionsTypeSelect("down")}
+              isActive={transactionType === 'down'}
+            />
+          </TransactionsTypes>
         </Fields>
 
         <Button title="Enviar" />
