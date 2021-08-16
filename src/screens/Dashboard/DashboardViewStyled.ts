@@ -6,7 +6,6 @@ import {
   getBottomSpace,
   getStatusBarHeight,
 } from "react-native-iphone-x-helper";
-
 import { DataListProps } from "./DashboardView";
 
 export const Container = styled.View`
