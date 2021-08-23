@@ -1,18 +1,20 @@
 import React, { useState } from "react";
+import { useForm } from "react-hook-form";
 import { Modal } from "react-native";
 import { Button } from "../../components/Forms/Button/Button";
 import { CategorySelectButton } from "../../components/Forms/CategorySelectButton/CategorySelectButton";
-import { Input } from "../../components/Forms/Input/Input";
+import { InputForm } from "../../components/Forms/InputForm/InputForm";
 import { TransactionTypeButton } from "../../components/Forms/TransactionTypeButton/TransactionTypeButton";
 import { CategorySelectView } from "../CategorySelect/CategorySelectView";
 import {
-  Container,
-  Header,
-  Title,
-  Form,
-  Fields,
-  TransactionsTypes,
+  Container, Fields, Form, Header,
+  Title, TransactionsTypes
 } from "./RegisterViewStyle";
+
+interface FormData {
+  name: string;
+  amount: string;
+}
 
 export function RegisterView() {
   const [transactionType, setTransactionType] = useState("");
@@ -22,12 +24,25 @@ export function RegisterView() {
     name: "Categoria",
   });
 
+  const { control, handleSubmit } = useForm();
+
   const handleTransactionsTypeSelect = (type: "up" | "down") =>
     setTransactionType(type);
 
   const handleCloseSelectCategory = () => setCategoryModalOpen(false);
 
   const handleOpenSelectCategory = () => setCategoryModalOpen(true);
+
+  const handleRegister = (form: FormData) => {
+    const data = {
+      name: form.name,
+      amount: form.amount,
+      transactionType,
+      category: category.key,
+    };
+
+    console.log(data);
+  };
 
   return (
     <Container>
@@ -37,8 +52,9 @@ export function RegisterView() {
 
       <Form>
         <Fields>
-          <Input placeholder="Nome" />
-          <Input placeholder="Preço" />
+          <InputForm name="name" control={control} placeholder="Nome" />
+
+          <InputForm name="amount" keyboardType="numeric" control={control} placeholder="Preço" />
 
           <TransactionsTypes>
             <TransactionTypeButton
@@ -61,7 +77,7 @@ export function RegisterView() {
           />
         </Fields>
 
-        <Button title="Enviar" />
+        <Button title="Enviar" onPress={handleSubmit(handleRegister)} />
       </Form>
 
       <Modal visible={categoryModalOpen}>
