@@ -1,8 +1,10 @@
 import React, { useState } from "react";
+import { Modal } from "react-native";
 import { Button } from "../../components/Forms/Button/Button";
-import { CategorySelect } from "../../components/Forms/CategorySelect/CategorySelect";
+import { CategorySelectButton } from "../../components/Forms/CategorySelectButton/CategorySelectButton";
 import { Input } from "../../components/Forms/Input/Input";
 import { TransactionTypeButton } from "../../components/Forms/TransactionTypeButton/TransactionTypeButton";
+import { CategorySelectView } from "../CategorySelect/CategorySelectView";
 import {
   Container,
   Header,
@@ -14,9 +16,18 @@ import {
 
 export function RegisterView() {
   const [transactionType, setTransactionType] = useState("");
+  const [categoryModalOpen, setCategoryModalOpen] = useState(false);
+  const [category, setCategory] = useState({
+    key: "category",
+    name: "Categoria",
+  });
 
   const handleTransactionsTypeSelect = (type: "up" | "down") =>
     setTransactionType(type);
+
+  const handleCloseSelectCategory = () => setCategoryModalOpen(false);
+
+  const handleOpenSelectCategory = () => setCategoryModalOpen(true);
 
   return (
     <Container>
@@ -34,21 +45,32 @@ export function RegisterView() {
               title="Income"
               type="up"
               onPress={() => handleTransactionsTypeSelect("up")}
-              isActive={transactionType === 'up'}
+              isActive={transactionType === "up"}
             />
             <TransactionTypeButton
               title="Outcome"
               type="down"
               onPress={() => handleTransactionsTypeSelect("down")}
-              isActive={transactionType === 'down'}
+              isActive={transactionType === "down"}
             />
           </TransactionsTypes>
-          
-          <CategorySelect title="Categoria"/>
+
+          <CategorySelectButton
+            title={category.name}
+            onPress={handleOpenSelectCategory}
+          />
         </Fields>
 
         <Button title="Enviar" />
       </Form>
+
+      <Modal visible={categoryModalOpen}>
+        <CategorySelectView
+          category={category}
+          setCategory={setCategory}
+          closeSelectCategory={handleCloseSelectCategory}
+        />
+      </Modal>
     </Container>
   );
 }
