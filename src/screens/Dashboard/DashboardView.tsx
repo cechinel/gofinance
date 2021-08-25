@@ -4,7 +4,7 @@ import { TransactionCard, TransactionProps } from "../../components/TransactionC
 import {
   Container,
   Header, HightlightCards, Icon, Photo, Title,
-  TransactionList, Transactions, User, UserContainer, UserGreeting, UserInfo, UserName
+  TransactionList, Transactions, User, UserContainer, UserGreeting, UserInfo, UserName, LogoutButton
 } from "./DashboardViewStyled";
 
 export interface DataListProps extends TransactionProps {
@@ -64,7 +64,9 @@ export function DashboardView() {
             </User>
           </UserInfo>
 
-          <Icon name="power" />
+          <LogoutButton onPress={() => {}}>
+            <Icon name="power"/>
+          </LogoutButton>
         </UserContainer>
       </Header>
 
