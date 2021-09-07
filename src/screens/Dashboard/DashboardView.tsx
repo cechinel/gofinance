@@ -1,106 +1,123 @@
-import React from "react";
-import { HightlightCard } from "../../components/HightlightCard/HightlightCard";
-import { TransactionCard, TransactionProps } from "../../components/TransactionCard/TransactionCardView";
+import React, { useState } from 'react';
+import { useEffect } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { HightlightCard } from '../../components/HightlightCard/HightlightCard';
 import {
-  Container,
-  Header, HightlightCards, Icon, Photo, Title,
-  TransactionList, Transactions, User, UserContainer, UserGreeting, UserInfo, UserName, LogoutButton
-} from "./DashboardViewStyled";
+	TransactionCard,
+	TransactionProps,
+} from '../../components/TransactionCard/TransactionCardView';
+import {
+	Container,
+	Header,
+	HightlightCards,
+	Icon,
+	Photo,
+	Title,
+	TransactionList,
+	Transactions,
+	User,
+	UserContainer,
+	UserGreeting,
+	UserInfo,
+	UserName,
+	LogoutButton,
+} from './DashboardViewStyled';
 
 export interface DataListProps extends TransactionProps {
-  id: string;
+	id: string;
 }
 
 export function DashboardView() {
-  const data: DataListProps[] = [
-    {
-      id: "2",
-      title: "Foo Bar",
-      amount: "R$ 400,00",
-      type: "positive",
-      category: {
-        name: "Vendas",
-        icon: "dollar-sign",
-      },
-      date: "12/12/2222",
-    },
-    {
-      id: "3",
-      title: "Joe Doe",
-      amount: "R$ 333,00",
-      type: "negative",
-      category: {
-        name: "Vendas",
-        icon: "coffee",
-      },
-      date: "12/12/2222",
-    },
-    {
-      id: "4",
-      title: "Bar Code",
-      amount: "R$ 999,00",
-      type: "positive",
-      category: {
-        name: "Vendas",
-        icon: "shopping-bag",
-      },
-      date: "12/12/2222",
-    },
-  ];
+	const [data, setData] = useState<DataListProps[]>([]);
 
-  return (
-    <Container>
-      <Header>
-        <UserContainer>
-          <UserInfo>
-            <Photo
-              source={{
-                uri: "https://avatars.githubusercontent.com/u/1832092?v=4",
-              }}
-            />
-            <User>
-              <UserGreeting>Olar, </UserGreeting>
-              <UserName>Alexandre</UserName>
-            </User>
-          </UserInfo>
+	const loadTransaction = async () => {
+		const dataKey = '@gofinances:transactions';
+		const response = await AsyncStorage.getItem(dataKey);
+		const transactions = response ? JSON.parse(response) : [];
 
-          <LogoutButton onPress={() => {}}>
-            <Icon name="power"/>
-          </LogoutButton>
-        </UserContainer>
-      </Header>
+		const transactionsFormatted: DataListProps[] = transactions.map(
+			(item: DataListProps) => {
+				const amount = Number(item.amount).toLocaleString('pt-BR', {
+					style: 'currency',
+					currency: 'BRL',
+				});
 
-      <HightlightCards>
-        <HightlightCard
-          title="Entradas"
-          amount="R$ 17.500,00"
-          lastTransaction="ijasoija soija soijaasas"
-          type="down"
-        />
-        <HightlightCard
-          title="Saídas"
-          amount="R$ 500,00"
-          lastTransaction="ijasoija soija soijaasas"
-          type="up"
-        />
-        <HightlightCard
-          title="Total"
-          amount="R$ 17.000,00"
-          lastTransaction="ijasoija soija soijaasas"
-          type="total"
-        />
-      </HightlightCards>
+				const dateFormatted = Intl.DateTimeFormat('pt-BR', {
+					day: '2-digit',
+					month: '2-digit',
+					year: '2-digit',
+				}).format(new Date(item.date));
 
-      <Transactions>
-        <Title>Listagem</Title>
+				return {
+					id: item.id,
+					name: item.name,
+					amount,
+					type: item.type,
+					dateFormatted,
+					category: item.category,
+				};
+			}
+		);
 
-        <TransactionList
-          data={data}
-          keyExtractor={item => item.id}
-          renderItem={({item}) => <TransactionCard data={item} />}
-        />
-        
-      </Transactions>
-    </Container>
-  );
+		setData(transactionsFormatted);
+	};
+
+	useEffect(() => {
+		loadTransaction();
+	}, []);
+
+	return (
+		<Container>
+			<Header>
+				<UserContainer>
+					<UserInfo>
+						<Photo
+							source={{
+								uri: 'https://avatars.githubusercontent.com/u/1832092?v=4',
+							}}
+						/>
+						<User>
+							<UserGreeting>Olar, </UserGreeting>
+							<UserName>Alexandre</UserName>
+						</User>
+					</UserInfo>
+
+					<LogoutButton onPress={() => {}}>
+						<Icon name="power" />
+					</LogoutButton>
+				</UserContainer>
+			</Header>
+
+			<HightlightCards>
+				<HightlightCard
+					title="Entradas"
+					amount="R$ 17.500,00"
+					lastTransaction="ijasoija soija soijaasas"
+					type="down"
+				/>
+				<HightlightCard
+					title="Saídas"
+					amount="R$ 500,00"
+					lastTransaction="ijasoija soija soijaasas"
+					type="up"
+				/>
+				<HightlightCard
+					title="Total"
+					amount="R$ 17.000,00"
+					lastTransaction="ijasoija soija soijaasas"
+					type="total"
+				/>
+			</HightlightCards>
+
+			<Transactions>
+				<Title>Listagem</Title>
+
+				<TransactionList
+					data={data}
+					keyExtractor={(item) => item.id}
+					renderItem={({ item }) => <TransactionCard data={item} />}
+				/>
+			</Transactions>
+		</Container>
+	);
 }

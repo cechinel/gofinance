@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Keyboard, Modal, TouchableWithoutFeedback } from 'react-native';
+import { Alert, Keyboard, Modal, TouchableWithoutFeedback } from 'react-native';
 import { Button } from '../../components/Forms/Button/Button';
 import { CategorySelectButton } from '../../components/Forms/CategorySelectButton/CategorySelectButton';
 import { InputForm } from '../../components/Forms/InputForm/InputForm';
 import { TransactionTypeButton } from '../../components/Forms/TransactionTypeButton/TransactionTypeButton';
-import { CategorySelectView } from '../CategorySelect/CategorySelectView';
+import { CategorySelect } from '../CategorySelect/CategorySelectView';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { schema } from './RegisterSchema';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -58,8 +58,12 @@ export function RegisterView() {
 	const handleOpenSelectCategory = () => setCategoryModalOpen(true);
 
 	const handleRegister = async (form: FormData) => {
-		if (!transactionType || category.key === 'category') {
-			return;
+		if (!transactionType) {
+			return Alert.alert('Selecione o tipo de transação');
+		}
+
+		if (category.key === 'category') {
+			return Alert.alert('Selecione a categoria');
 		}
 
 		const newTransaction = {
@@ -95,7 +99,6 @@ export function RegisterView() {
 	useEffect(() => {
 		const loadData = async () => {
 			const dataLoaded = await AsyncStorage.getItem(dataKey);
-			console.log(JSON.parse(dataLoaded!));
 		};
 		loadData();
 	}, []);
@@ -158,7 +161,7 @@ export function RegisterView() {
 				</Form>
 
 				<Modal visible={categoryModalOpen}>
-					<CategorySelectView
+					<CategorySelect
 						category={category}
 						setCategory={setCategory}
 						closeSelectCategory={handleCloseSelectCategory}
