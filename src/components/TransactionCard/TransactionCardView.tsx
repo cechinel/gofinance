@@ -12,7 +12,7 @@ import {
 import { categories } from '../../utils/categories';
 
 export interface TransactionCardProps {
-  type: 'positive' | 'negative';
+  transactionType: 'positive' | 'negative';
   name: string;
   amount: string;
   category: string;
@@ -24,16 +24,17 @@ interface Props {
 }
 
 export function TransactionCard({ data }: Props) {
+  
   const [ category ] = categories.filter(
     item => item.key === data.category
   );
-
+  console.log(data)
   return (
     <Container>
       <Title>{data.name}</Title>
 
-      <Amount type={data.type}>
-        {data.type === "negative" && "- "}
+      <Amount type={data.transactionType}>
+        {data.transactionType === "negative" && "- "}
         {data.amount}
       </Amount>
 

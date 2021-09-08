@@ -4,7 +4,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { HightlightCard } from '../../components/HightlightCard/HightlightCard';
 import {
 	TransactionCard,
-	TransactionProps,
+	TransactionCardProps,
 } from '../../components/TransactionCard/TransactionCardView';
 import {
 	Container,
@@ -23,7 +23,7 @@ import {
 	LogoutButton,
 } from './DashboardViewStyled';
 
-export interface DataListProps extends TransactionProps {
+export interface DataListProps extends TransactionCardProps {
 	id: string;
 }
 
@@ -34,7 +34,7 @@ export function DashboardView() {
 		const dataKey = '@gofinances:transactions';
 		const response = await AsyncStorage.getItem(dataKey);
 		const transactions = response ? JSON.parse(response) : [];
-
+		console.log('transactions ', transactions)
 		const transactionsFormatted: DataListProps[] = transactions.map(
 			(item: DataListProps) => {
 				const amount = Number(item.amount).toLocaleString('pt-BR', {
@@ -52,8 +52,8 @@ export function DashboardView() {
 					id: item.id,
 					name: item.name,
 					amount,
-					type: item.type,
-					dateFormatted,
+					transactionType: item.transactionType,
+					date: dateFormatted,
 					category: item.category,
 				};
 			}

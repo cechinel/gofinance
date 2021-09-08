@@ -70,7 +70,7 @@ export function RegisterView() {
 			id: String(uuid.v4()),
 			name: form.name,
 			amount: form.amount,
-			transactionType,
+			transactionType: transactionType,
 			category: category.key,
 			date: new Date(),
 		};
