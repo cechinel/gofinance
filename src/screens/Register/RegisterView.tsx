@@ -50,7 +50,7 @@ export function RegisterView() {
 
 	const navigation = useNavigation<NavigationProps>();
 
-	const handleTransactionsTypeSelect = (type: 'up' | 'down') =>
+	const handleTransactionsTypeSelect = (type: 'positive' | 'negative') =>
 		setTransactionType(type);
 
 	const handleCloseSelectCategory = () => setCategoryModalOpen(false);
@@ -134,17 +134,17 @@ export function RegisterView() {
 								title="Income"
 								type="up"
 								onPress={() =>
-									handleTransactionsTypeSelect('up')
+									handleTransactionsTypeSelect('positive')
 								}
-								isActive={transactionType === 'up'}
+								isActive={transactionType === 'positive'}
 							/>
 							<TransactionTypeButton
 								title="Outcome"
 								type="down"
 								onPress={() =>
-									handleTransactionsTypeSelect('down')
+									handleTransactionsTypeSelect('negative')
 								}
-								isActive={transactionType === 'down'}
+								isActive={transactionType === 'negative'}
 							/>
 						</TransactionsTypes>
 

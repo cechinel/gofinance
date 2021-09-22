@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { HightlightCard } from '../../components/HightlightCard/HightlightCard';
@@ -22,6 +22,7 @@ import {
 	UserName,
 	LogoutButton,
 } from './DashboardViewStyled';
+import { useFocusEffect } from '@react-navigation/native';
 
 export interface DataListProps extends TransactionCardProps {
 	id: string;
@@ -30,11 +31,11 @@ export interface DataListProps extends TransactionCardProps {
 export function DashboardView() {
 	const [data, setData] = useState<DataListProps[]>([]);
 
-	const loadTransaction = async () => {
+	const loadTransactions = async () => {
 		const dataKey = '@gofinances:transactions';
 		const response = await AsyncStorage.getItem(dataKey);
 		const transactions = response ? JSON.parse(response) : [];
-		console.log('transactions ', transactions)
+		console.log('transactions ', transactions);
 		const transactionsFormatted: DataListProps[] = transactions.map(
 			(item: DataListProps) => {
 				const amount = Number(item.amount).toLocaleString('pt-BR', {
@@ -63,8 +64,14 @@ export function DashboardView() {
 	};
 
 	useEffect(() => {
-		loadTransaction();
+		loadTransactions();
 	}, []);
+
+	useFocusEffect(
+		useCallback(() => {
+			loadTransactions();
+		}, [])
+	);
 
 	return (
 		<Container>
